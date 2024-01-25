@@ -1,0 +1,6 @@
+docker container run -it ubuntu bash
+mkdir /usr/src/app
+touch /usr/src/app/index.js
+apt-get update
+apt-get install nano
+nano /usr/src/app/index.js
