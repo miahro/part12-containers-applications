@@ -1,0 +1,16 @@
+miahro@lx2-fuxi071:~/part12-containers-applications/todo-app/todo-backend$ docker exec -it todo-backend-redis-1 bash
+root@933ea6e2652b:/data# redis-cli
+127.0.0.1:6379> KEYS *
+1) "added"
+127.0.0.1:6379> GET added
+"1"
+127.0.0.1:6379> SET added 9001
+OK
+127.0.0.1:6379> GET added
+"9001"
+127.0.0.1:6379> GET added
+"9002"
+127.0.0.1:6379> EXIT
+root@933ea6e2652b:/data# exit
+exit
+miahro@lx2-fuxi071:~/part12-containers-applications/todo-app/todo-backend$ 
