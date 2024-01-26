@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
   });
 });
 
+/* GET statistics */
 router.get('/statistics', async (req, res) => {
   const redisResult = await redis.getAsync('added');
   const count = Number(redisResult) ?? 0;
