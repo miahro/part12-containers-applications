@@ -12,4 +12,6 @@ EXPOSE 3000
 RUN npm ci
 RUN npm run build
 
+RUN CI=true npm test
+
 CMD ["npm", "start"]
