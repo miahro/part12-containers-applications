@@ -1,24 +1,41 @@
 version: '3.8'
 
+#name persistent volumes
+volumes:
+  mongo_data:
+  redis_data:
+
+
 services:
   mongo:
     image: mongo
     ports:
-      - 3456:27017
+      - 27017:27017 #mongo default
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: mongo_user
+      MONGO_INITDB_ROOT_PASSWORD: mongo_pw
       MONGO_INITDB_DATABASE: the_database
     volumes:
       - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-      - ./mongo_data:/data/db
-    container_name: mongo
+      - mongo_data:/data/db #refer to persistent volume
+
   redis:
     image: redis
     ports:
-      - 6379:6379
-    command: [ 'redis-server', '--appendonly', 'yes' ] # Overwrite the CMD
+      - 6379:6379 #redis default
+    command: [ 'redis-server', '--appendonly', 'yes' ]
     volumes:
-      # Declare the volume
-      - ./redis_data:/data
-    container_name: redis
+      - redis_data:/data #refer to persistent volume
+
+  server:
+    image: todo-back-development
+    ports:
+      - 3001:3001
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    environment:
+      REDIS_URL: redis://redis:6379
+      MONGO_URL: mongodb://the_username:the_password@mongo:27017/the_database
+    command: [ 'npm', 'run', 'dev' ] #overrides CMD in dev.Dockerfile
+    container_name: todo-back-development
